@@ -45,12 +45,13 @@
       <el-table-column
         prop="title"
         label="标题"
+        min-width="100"
       ></el-table-column>
       <el-table-column
         prop="created_date"
         label="发布时间"
         sortable
-        width="170"
+        width="200"
       ></el-table-column>
       <el-table-column
         prop="authors"
@@ -88,7 +89,7 @@
       <el-table-column
         label="操作"
         fixed="right"
-        width="250"
+        width="270"
       >
         <template slot-scope="scope">
           <el-button
