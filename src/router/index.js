@@ -34,7 +34,7 @@ let isLoginRequired = (routeName) => {
 }
 
 const router = new Router({
-  mode: 'history',
+  mode: process.env.VUE_APP_ROUTER_MODE === 'hash' ? 'hash' : 'history',
   base: process.env.BASE_URL,
   routes,
   scrollBehavior: () => ({

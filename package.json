@@ -3,9 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "vue-cli-service serve",
+    "dev": "vue-cli-service serve",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:hash": "vue-cli-service build --mode prod-hash",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

@@ -1,13 +1,13 @@
 <template>
   <div class="author">
     <el-dropdown>
-      <i class="avatar-icon" :style="{backgroundImage: `url(${author.avatar}?${Date.now()})`}"></i>
+      <i class="avatar-icon" :style="{backgroundImage: `url(${author.avatar})`}"></i>
       <el-dropdown-menu slot="dropdown" class="author-wrapper">
         <ul class="author-wrapper">
           <div class="author-info">
             <div class="background"></div>
             <i class="avatar"
-              :style="{backgroundImage: `url(${author.avatar}?${Date.now()})`}"
+              :style="{backgroundImage: `url(${author.avatar})`}"
             >
               <i class="edit el-icon-edit"></i>
               <input
