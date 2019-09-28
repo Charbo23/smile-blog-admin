@@ -48,13 +48,13 @@ let homeRouter = [
     icon: 'el-icon-chat-dot-square',
   },
   {
-    title: '全局管理',
+    title: '友情链接',
     type: 'view',
-    name: Symbol('blog-config'),
-    route: '/blog-config',
-    filePath: 'views/blog-config/blog-config.vue',
+    name: Symbol('links'),
+    route: '/links',
+    filePath: 'views/links/links.vue',
     inNav: true,
-    icon: 'el-icon-setting',
+    icon: 'el-icon-link',
   }
 ]
 

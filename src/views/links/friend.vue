@@ -111,7 +111,7 @@ export default {
           console.log(e)
         }
       }).catch(() => {
-        this.$message.info('已取消删除')
+        // this.$message.info('已取消删除')
       })
     },
 
