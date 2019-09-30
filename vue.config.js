@@ -4,6 +4,7 @@ module.exports = {
     publicPath: '/',
     devServer: {
         port: 8080,
+        open:true
     },
     configureWebpack: (config) => {
         if (process.env.NODE_ENV === "production") {
