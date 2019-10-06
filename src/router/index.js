@@ -48,10 +48,9 @@ router.beforeEach((to, from, next) => {
     next({ path: '/login' })
     return
   }
-
-  if (to.meta.title) {
-    document.title = to.meta.title
-  }
+  
+  const metaTitle = to.meta.title;
+  document.title = metaTitle ? metaTitle + " - Smile Blog" : 'Smile Blog';
 
   next()
 })

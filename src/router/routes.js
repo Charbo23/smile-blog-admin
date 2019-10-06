@@ -14,7 +14,10 @@ const routes = [
   {
     path: '/login',
     name: 'login',
-    component: () => import('@/views/login/login')
+    component: () => import('@/views/login/login'),
+    meta: {
+      title: '登录'
+    }
   },
   {
     redirect: '/404',
