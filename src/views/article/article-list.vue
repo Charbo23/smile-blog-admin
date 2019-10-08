@@ -11,12 +11,10 @@
             clearable
             v-model="searchVal"
             maxlength="10"
+            @keyup.enter.native="search"
             @clear="clearSearch"
-          >
-          </el-input>
-          <el-button class="search-btn" type="primary" size="medium" @click="search"
-            >搜索</el-button
-          >
+          ></el-input>
+          <el-button class="search-btn" type="primary" size="medium" @click="search">搜索</el-button>
         </div>
       </div>
       <el-card class="filter-wrapper" v-loading="loading">
@@ -29,9 +27,7 @@
               v-for="category in categories"
               :key="category.id"
               @click="selectFilter(category.id, 'categoryId')"
-            >
-              {{ category.name }}
-            </dd>
+            >{{ category.name }}</dd>
           </div>
         </dl>
         <dl class="filter-item">
@@ -43,9 +39,7 @@
               v-for="author in authors"
               :key="author.id"
               @click="selectFilter(author.id, 'authorId')"
-            >
-              {{ author.name }}
-            </dd>
+            >{{ author.name }}</dd>
           </div>
         </dl>
         <dl class="filter-item">
@@ -57,9 +51,7 @@
               v-for="tag in tags"
               :key="tag.id"
               @click="selectFilter(tag.id, 'tagId')"
-            >
-              {{ tag.name }}
-            </dd>
+            >{{ tag.name }}</dd>
           </div>
         </dl>
         <dl class="filter-item">
@@ -71,9 +63,7 @@
               v-for="item in publicList"
               :key="item.id"
               @click="selectFilter(item.id, 'publicId')"
-            >
-              {{ item.name }}
-            </dd>
+            >{{ item.name }}</dd>
           </div>
         </dl>
         <dl class="filter-item">
@@ -85,9 +75,7 @@
               v-for="item in status"
               :key="item.id"
               @click="selectFilter(item.id, 'statusId')"
-            >
-              {{ item.name }}
-            </dd>
+            >{{ item.name }}</dd>
           </div>
         </dl>
         <dl class="filter-item">
@@ -99,9 +87,7 @@
               v-for="item in star"
               :key="item.id"
               @click="selectFilter(item.id, 'starId')"
-            >
-              {{ item.name }}
-            </dd>
+            >{{ item.name }}</dd>
           </div>
         </dl>
       </el-card>
@@ -112,7 +98,8 @@
           :currentPage="currentPage"
           @handleInfoResult="onHandleInfoResult"
           @handleEdit="onHandleEdit"
-          @handleCurrentPage="onHandleCurrentPage"></article-table>
+          @handleCurrentPage="onHandleCurrentPage"
+        ></article-table>
       </el-card>
     </div>
     <div v-if="isEdit">
@@ -129,13 +116,13 @@
 </template>
 
 <script>
-import ArticleTable from './article-table'
-import category from '@/services/models/category'
-import tag from '@/services/models/tag'
-import author from '@/services/models/author'
-import article from '@/services/models/article'
-import Utils from '@/services/utils/util'
-import ArticleInfo from './article-info'
+import ArticleTable from "./article-table";
+import category from "@/services/models/category";
+import tag from "@/services/models/tag";
+import author from "@/services/models/author";
+import article from "@/services/models/article";
+import Utils from "@/services/utils/util";
+import ArticleInfo from "./article-info";
 
 export default {
   components: {
@@ -150,7 +137,7 @@ export default {
       isEdit: false,
       loading: false,
       tableLoading: false,
-      searchVal: '',
+      searchVal: "",
       categoryId: 0,
       authorId: 0,
       tagId: 0,
@@ -162,47 +149,55 @@ export default {
       authors: [],
       tags: [],
       publicList: [
-        { id: 0, name: '全部' },
-        { id: 1, name: '公开' },
-        { id: 2, name: '私密' }
+        { id: 0, name: "全部" },
+        { id: 1, name: "公开" },
+        { id: 2, name: "私密" }
       ],
       status: [
-        { id: 0, name: '全部' },
-        { id: 1, name: '已发布' },
-        { id: 2, name: '草稿' }
+        { id: 0, name: "全部" },
+        { id: 1, name: "已发布" },
+        { id: 2, name: "草稿" }
       ],
       star: [
-        { id: 0, name: '全部' },
-        { id: 1, name: '非精选' },
-        { id: 2, name: '精选' }
+        { id: 0, name: "全部" },
+        { id: 1, name: "非精选" },
+        { id: 2, name: "精选" }
       ],
       form: {}
-    }
+    };
   },
+
+  // watch: {
+  //   searchVal: function(next) {
+  //     if (next === "") {
+  //       this.getArticles();
+  //     }
+  //   }
+  // },
 
   methods: {
     selectFilter(id, target) {
       if (id === this[target]) {
-        return
+        return;
       }
-      this[target] = id
-      this.getArticles()
+      this[target] = id;
+      this.getArticles();
     },
 
     onHandleCurrentPage(page) {
-      this.getArticles(page - 1)
+      this.getArticles(page - 1);
     },
 
     onHandleInfoResult(flag) {
       if (flag === true) {
-        this.getArticles()
+        this.getArticles();
       }
     },
 
     onHandleBack(flag) {
-      this.isEdit = false
+      this.isEdit = false;
       if (flag === true) {
-        this.getArticles()
+        this.getArticles();
       }
     },
 
@@ -214,39 +209,40 @@ export default {
         authors: data.authors.map(v => v.id),
         createdDate: data.created_date,
         cover: data.cover,
-        content: '',
+        content: "",
         categoryId: data.category.id,
         tags: data.tags.map(v => v.id),
         public: data.public,
         status: data.status,
         star: data.star
-      }
+      };
       try {
-        const res = await article.getContent(data.id)
-        edit.content = res.content
-        this.form = edit
-        this.isEdit = true
+        const res = await article.getContent(data.id);
+        edit.content = res.content;
+        this.form = edit;
+        this.isEdit = true;
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(e)
+        console.log(e);
       }
     },
 
     search() {
-      if (!this.searchVal) {
-        this.$message.warning('搜索内容不能为空')
-        return
-      }
-      this.getArticles()
+      // if (!this.searchVal) {
+      //   this.$message.warning("搜索内容不能为空");
+      //   return;
+      // }
+      this.searchVal=this.searchVal.trim();
+      this.getArticles();
     },
 
     clearSearch() {
-      this.getArticles()
+      this.getArticles();
     },
 
     async getArticles(page = 0) {
       try {
-        this.tableLoading = true
+        this.tableLoading = true;
         let params = {
           categoryId: this.categoryId,
           authorId: this.authorId,
@@ -255,77 +251,77 @@ export default {
           statusId: this.statusId,
           starId: this.starId,
           page
-        }
+        };
         if (this.searchVal) {
-          params.search = this.searchVal
+          params.search = this.searchVal;
         }
-        let { articles, total } = await article.getArticles(params)
+        let { articles, total } = await article.getArticles(params);
         articles.forEach(v => {
-          v.created_date = Utils.timestampToTime(v.created_date)
-        })
-        this.currentPage = page + 1
-        this.total = total
-        this.articleData = articles
-        this.tableLoading = false
+          v.created_date = Utils.timestampToTime(v.created_date);
+        });
+        this.currentPage = page + 1;
+        this.total = total;
+        this.articleData = articles;
+        this.tableLoading = false;
       } catch (e) {
-        this.tableLoading = false
+        this.tableLoading = false;
         // eslint-disable-next-line no-console
-        console.log(e)
+        console.log(e);
       }
     },
 
     async getCategories() {
       try {
-        const res = await category.getCategories()
+        const res = await category.getCategories();
         res.unshift({
           id: 0,
-          name: '全部'
-        })
-        this.categories = res
+          name: "全部"
+        });
+        this.categories = res;
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(e)
+        console.log(e);
       }
     },
 
     async getAuthors() {
       try {
-        const res = await author.getAuthors()
+        const res = await author.getAuthors();
         res.unshift({
           id: 0,
-          name: '全部'
-        })
-        this.authors = res
+          name: "全部"
+        });
+        this.authors = res;
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(e)
+        console.log(e);
       }
     },
 
     async getTags() {
       try {
-        const res = await tag.getTags()
+        const res = await tag.getTags();
         res.unshift({
           id: 0,
-          name: '全部'
-        })
-        this.tags = res
+          name: "全部"
+        });
+        this.tags = res;
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(e)
+        console.log(e);
       }
-    },
+    }
   },
 
   created() {
-    this.loading = true
-    this.getCategories()
-    this.getAuthors()
-    this.getTags()
-    this.getArticles()
-    this.loading = false
+    this.loading = true;
+    this.getCategories();
+    this.getAuthors();
+    this.getTags();
+    this.getArticles();
+    this.loading = false;
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -398,11 +394,10 @@ export default {
     margin-right: 4px;
 
     &:not(:last-child)::after {
-      content: ',';
+      content: ",";
     }
   }
 }
-
 
 .demo-table-expand {
   font-size: 0;
