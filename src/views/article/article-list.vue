@@ -167,14 +167,6 @@ export default {
     };
   },
 
-  // watch: {
-  //   searchVal: function(next) {
-  //     if (next === "") {
-  //       this.getArticles();
-  //     }
-  //   }
-  // },
-
   methods: {
     selectFilter(id, target) {
       if (id === this[target]) {
@@ -228,10 +220,6 @@ export default {
     },
 
     search() {
-      // if (!this.searchVal) {
-      //   this.$message.warning("搜索内容不能为空");
-      //   return;
-      // }
       this.searchVal=this.searchVal.trim();
       this.getArticles();
     },
