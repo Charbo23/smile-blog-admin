@@ -3,7 +3,7 @@ const webpack = require('webpack');
 const assetsCDN = {
     css: [
         // 'https://cdn.remixicon.com/releases/v2.0.0/remixicon.css',
-        'http://netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+        '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
     ],
    
     js: [
