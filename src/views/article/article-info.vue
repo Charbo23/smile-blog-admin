@@ -2,7 +2,11 @@
   <div class="container">
     <div class="view-title">
       {{infoType === 'add' ? '添加文章' : '编辑文章'}}
-      <span v-if="infoType === 'edit'" class="back" @click="$emit('handleBack', false)">
+      <span
+        v-if="infoType === 'edit'"
+        class="back"
+        @click="$emit('handleBack', false)"
+      >
         <i class="el-icon-back"></i>
         返回
       </span>
@@ -20,18 +24,10 @@
             :rules="rules"
           >
             <el-form-item label="标题" prop="title">
-              <el-input
-                v-model="form.title"
-                size="medium"
-                placeholder="请输入标题"
-              ></el-input>
+              <el-input v-model="form.title" size="medium" placeholder="请输入标题"></el-input>
             </el-form-item>
             <el-form-item label="封面" prop="cover">
-              <el-input
-                v-model="form.cover"
-                size="medium"
-                placeholder="请输入封面地址"
-              ></el-input>
+              <el-input v-model="form.cover" size="medium" placeholder="请输入封面地址"></el-input>
             </el-form-item>
             <el-form-item label="描述" prop="description">
               <el-input
@@ -57,24 +53,17 @@
                   :key="author.id"
                   :label="author.name"
                   :value="author.id"
-                >
-                </el-option>
+                ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="分类" prop="categoryId">
-              <el-select
-                v-model="form.categoryId"
-                filterable
-                size="medium"
-                placeholder="请选择分类"
-              >
+              <el-select v-model="form.categoryId" filterable size="medium" placeholder="请选择分类">
                 <el-option
                   v-for="category in categories"
                   :key="category.id"
                   :value="category.id"
                   :label="category.name"
-                >
-                </el-option>
+                ></el-option>
               </el-select>
             </el-form-item>
             <el-form-item label="标签" prop="tags">
@@ -86,17 +75,10 @@
                 size="medium"
                 placeholder="请选择标签"
               >
-                <el-option
-                  v-for="tag in tags"
-                  :key="tag.id"
-                  :label="tag.name"
-                  :value="tag.id"
-                >
-                </el-option>
+                <el-option v-for="tag in tags" :key="tag.id" :label="tag.name" :value="tag.id"></el-option>
               </el-select>
             </el-form-item>
-            <el-form-item
-              label="时间" prop="createdDate">
+            <el-form-item label="时间" prop="createdDate">
               <el-date-picker
                 v-model="form.createdDate"
                 size="medium"
@@ -131,10 +113,10 @@
               ></el-input>
             </el-form-item>
             <el-form-item>
-              <el-button type="primary" @click.stop="submitForm('form')"
-                >保 存</el-button
-              >
+              <el-button type="primary" @click.stop="submitForm('form')">保 存</el-button>
               <el-button type="primary" @click="preview">预 览</el-button>
+              <!-- 修复动态加载字体图标延迟问题 -->
+              <i class="fa fa-check" style="visibility: hidden"></i>
             </el-form-item>
           </el-form>
         </el-col>
@@ -144,16 +126,16 @@
 </template>
 
 <script>
-import category from '@/services/models/category'
-import tag from '@/services/models/tag'
-import author from '@/services/models/author'
-import article from '@/services/models/article'
+import category from "@/services/models/category";
+import tag from "@/services/models/tag";
+import author from "@/services/models/author";
+import article from "@/services/models/article";
 
 export default {
   props: {
     infoType: {
       type: String,
-      default: 'add'
+      default: "add"
     },
 
     info: {
@@ -181,120 +163,112 @@ export default {
     return {
       loading: false,
       form: {
-        title: '',
+        title: "",
         authors: [],
-        description: '',
-        createdDate: '',
-        cover: '',
-        content: '',
-        categoryId: '',
+        description: "",
+        createdDate: "",
+        cover: "",
+        content: "",
+        categoryId: "",
         tags: [],
         public: 1,
         status: 1,
-        star: 1,
+        star: 1
       },
       authors: [],
       categories: [],
       tags: [],
       rules: {
-        title: [
-          { trigger: 'blur', message: '请输入标题', required: true }
-        ],
-        authors: [
-          { trigger: 'change', message: '请选择作者', required: true }
-        ],
+        title: [{ trigger: "blur", message: "请输入标题", required: true }],
+        authors: [{ trigger: "change", message: "请选择作者", required: true }],
         description: [
-          { trigger: 'blur', message: '请输入描述', required: true }
+          { trigger: "blur", message: "请输入描述", required: true }
         ],
         createdDate: [
-          { trigger: 'blur', message: '请选择创建时间', required: true}
+          { trigger: "blur", message: "请选择创建时间", required: true }
         ],
         cover: [
-          { type: 'url', trigger: 'blur', message: '请输入正确的封面地址'}
+          { type: "url", trigger: "blur", message: "请输入正确的封面地址" }
         ],
         content: [
-          { trigger: 'blur', message: '请输入文章内容', required: true }
+          { trigger: "blur", message: "请输入文章内容", required: true }
         ],
         categoryId: [
-          { trigger: 'change', message: '请选择分类', required: true }
+          { trigger: "change", message: "请选择分类", required: true }
         ],
-        tags: [
-          { type: 'array', message: '请选择标签', required: true }
-        ],
+        tags: [{ type: "array", message: "请选择标签", required: true }],
         public: [
-          { type: 'number', message: '请选择公开或私密', required: true }
+          { type: "number", message: "请选择公开或私密", required: true }
         ],
         status: [
-          { type: 'number', message: '请选择发布或草稿', required: true }
+          { type: "number", message: "请选择发布或草稿", required: true }
         ],
-        star: [
-          { type: 'number', message: '请选择是否为精选', required: true }
-        ]
+        star: [{ type: "number", message: "请选择是否为精选", required: true }]
       }
-    }
+    };
   },
 
   methods: {
     async submitForm(formName) {
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
-          if (this.infoType === 'add') {
+          if (this.infoType === "add") {
             // 新增文章
             try {
-              this.loadingn = true
-              const res = await article.createArticle(this.form)
+              this.loadingn = true;
+              const res = await article.createArticle(this.form);
               if (res.errorCode === 0) {
-                this.loading = false
-                this.$message.success(`${res.msg}`)
+                this.loading = false;
+                this.$message.success(`${res.msg}`);
                 this.resetForm(formName);
               } else {
-                this.loading = false
-                this.$message.error(`${res.msg}`)
+                this.loading = false;
+                this.$message.error(`${res.msg}`);
               }
             } catch (e) {
-              this.loading = false
+              this.loading = false;
               // eslint-disable-next-line no-console
-              console.log(e)
+              console.log(e);
             }
           } else {
             // 编辑文章
             if (this.isEquel(this.info, this.form)) {
-              this.$emit('handleBack', false)
-              return
+              this.$emit("handleBack", false);
+              return;
             }
             try {
               // eslint-disable-next-line no-console
-              const res = await article.updateArticle(this.form)
+              const res = await article.updateArticle(this.form);
               if (res.errorCode === 0) {
-                this.$message.success(`${res.msg}`)
-                this.$emit('handleBack', true)
+                this.$message.success(`${res.msg}`);
+                this.$emit("handleBack", true);
               } else {
-                this.$message.error(`${res.msg}`)
+                this.$message.error(`${res.msg}`);
               }
             } catch (e) {
               // eslint-disable-next-line no-console
-              console.log(e)
+              console.log(e);
             }
           }
         }
-      })
+      });
     },
 
     // 判断是否有更改字段
     isEquel(source, target) {
-      let isEquel = true
+      let isEquel = true;
       for (let key in source) {
         if (Array.isArray(source[key])) {
-          if (source[key].join('') !== target[key].join('')) {
-            isEquel = false
+          if (source[key].join("") !== target[key].join("")) {
+            isEquel = false;
           }
         } else {
           if (source[key] !== target[key]) {
-            isEquel = false
+            isEquel = false;
           }
         }
       }
-      return isEquel
+      return isEquel;
     },
 
     resetForm(formName) {
@@ -302,56 +276,60 @@ export default {
     },
 
     preview() {
-      
+      this.$message({
+        message: "敬请期待",
+        type: "info",
+        iconClass: "fa fa-hourglass-end info-icon"
+      });
     },
 
     async getCategories() {
       try {
-        this.categories = await category.getCategories()
+        this.categories = await category.getCategories();
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(e)
+        console.log(e);
       }
     },
 
     async getTags() {
       try {
-        this.tags = await tag.getTags()
+        this.tags = await tag.getTags();
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(e)
+        console.log(e);
       }
     },
 
     async getAuthors() {
       try {
-        this.authors = await author.getAuthors()
+        this.authors = await author.getAuthors();
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(e)
+        console.log(e);
       }
     },
 
     // 过滤全部
     fitlerAll(arr) {
-      let result = [].concat(arr)
-      result.shift()
-      return result
+      let result = [].concat(arr);
+      result.shift();
+      return result;
     }
   },
 
   created() {
-    if (this.infoType === 'add') {
+    if (this.infoType === "add") {
       // 添加文章
-      this.getCategories()
-      this.getTags()
-      this.getAuthors()
+      this.getCategories();
+      this.getTags();
+      this.getAuthors();
     } else {
       // 编辑文章
-      this.categories = this.fitlerAll(this.infoCategories)
-      this.tags = this.fitlerAll(this.infoTags)
-      this.authors = this.fitlerAll(this.infoAuthors)
-      this.form = JSON.parse(JSON.stringify(this.info))
+      this.categories = this.fitlerAll(this.infoCategories);
+      this.tags = this.fitlerAll(this.infoTags);
+      this.authors = this.fitlerAll(this.infoAuthors);
+      this.form = JSON.parse(JSON.stringify(this.info));
     }
   }
 };
@@ -383,3 +361,9 @@ export default {
 }
 </style>
 
+
+<style>
+.info-icon {
+  margin-right: 10px;
+}
+</style>
