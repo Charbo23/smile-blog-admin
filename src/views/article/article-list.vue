@@ -93,12 +93,14 @@
       </el-card>
       <el-card class="list-wrapper" v-loading="tableLoading">
         <article-table
+          :loading="tableLoading"
           :total="total"
           :articleData="articleData"
           :currentPage="currentPage"
           @handleInfoResult="onHandleInfoResult"
           @handleEdit="onHandleEdit"
           @handleCurrentPage="onHandleCurrentPage"
+          @handleLoading="onHandleLoading"
         ></article-table>
       </el-card>
     </div>
@@ -192,7 +194,10 @@ export default {
         this.getArticles();
       }
     },
-
+    onHandleLoading(state) {
+      console.log(state);
+      this.tableLoading = state;
+    },
     async onHandleEdit(data) {
       let edit = {
         id: data.id,
@@ -220,7 +225,7 @@ export default {
     },
 
     search() {
-      this.searchVal=this.searchVal.trim();
+      this.searchVal = this.searchVal.trim();
       this.getArticles();
     },
 
