@@ -195,7 +195,6 @@ export default {
       }
     },
     onHandleLoading(state) {
-      console.log(state);
       this.tableLoading = state;
     },
     async onHandleEdit(data) {
