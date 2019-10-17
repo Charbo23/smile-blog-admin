@@ -115,9 +115,14 @@ export default {
       type: Number,
       default: 0
     },
-    loading:{
-      type:Boolean,
-      default:false
+    loading: {
+      type: Boolean,
+      default: false
+    },
+
+    pageSize: {
+      type: Number,
+      default: 10
     }
   },
 
@@ -126,8 +131,7 @@ export default {
       currentId: null,
       publicMap,
       statusMap,
-      dialogVisible: false,
-      pageSize: 10
+      dialogVisible: false
     };
   },
   watch: {

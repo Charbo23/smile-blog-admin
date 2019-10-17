@@ -96,6 +96,7 @@
           :loading="tableLoading"
           :total="total"
           :articleData="articleData"
+          :pageSize="pageSize"
           :currentPage="currentPage"
           @handleInfoResult="onHandleInfoResult"
           @handleEdit="onHandleEdit"
@@ -134,6 +135,7 @@ export default {
 
   data() {
     return {
+      pageSize:10,
       currentPage: 1,
       total: 0,
       isEdit: false,
@@ -242,6 +244,7 @@ export default {
           publicId: this.publicId,
           statusId: this.statusId,
           starId: this.starId,
+          count: this.pageSize,
           page
         };
         if (this.searchVal) {
