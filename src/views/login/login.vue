@@ -83,7 +83,7 @@ export default {
   align-items: center;
   width: 100%;
   height: 100%;
-  background: url('../../assets/images/lighthouse.jpeg') no-repeat center center;
+  background: url($assets-url+'/lighthouse.jpg') no-repeat center center;
   background-size: cover;
 
   .overlay {

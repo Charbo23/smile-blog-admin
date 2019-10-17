@@ -409,7 +409,7 @@ export default {
       right: 0;
       bottom: 0;
       left: 0;
-      background: url(../../assets/images/lighthouse.jpeg) center center no-repeat;
+      background: url($assets-url+'/lighthouse.jpg') center center no-repeat;
       background-size: cover;
       filter: brightness(.7);
     }
