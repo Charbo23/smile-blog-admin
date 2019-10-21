@@ -1,6 +1,6 @@
 ## smile-blog-admin
 
-[![Build Status](https://www.travis-ci.org/smileShirmy/smile-blog-admin.svg?branch=master)](https://www.travis-ci.org/smileShirmy/smile-blog-admin)
+Inspired by  [Shirmy](https://github.com/smileShirmy) and customized for myself
 
 - 文章、分类、标签、评论、留言、用户等增删改查
 - 支持用户无感知token刷新
@@ -13,9 +13,9 @@
 
 该项目为后台管理部分，其它部分可点击下面的链接
 
-- 展示前端 [smile-blog-nuxt](https://github.com/smileShirmy/smile-blog-nuxt)
-- 管理后台 [smile-blog-admin](https://github.com/smileShirmy/smile-blog-admin)
-- 服务端 [smile-blog-koa](https://github.com/smileShirmy/smile-blog-koa)
+- 展示前端 [smile-blog-nuxt](https://github.com/Charbo23/smile-blog-nuxt)
+- 管理后台 [smile-blog-admin](https://github.com/Charbo23/smile-blog-admin)
+- 服务端 [smile-blog-koa](https://github.com/Charbo23/smile-blog-koa)
 
 ## screenshot
 
