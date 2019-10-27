@@ -83,8 +83,10 @@ _axios.interceptors.request.use(originConfig => {
     }
   }
   return reqConfig
-}, error => {
-  return Promise.reject(error)
+}, (error) => {
+  // eslint-disable-next-line no-console
+  console.log("Error occured on request");
+  return Promise.reject(error);
 })
 
 _axios.interceptors.response.use(async (res) => {
@@ -141,9 +143,10 @@ _axios.interceptors.response.use(async (res) => {
 
     reject(res.data)
   })
-}, error => {
+}, (error) => {
   // eslint-disable-next-line no-console
-  console.log(error)
+  console.log("Error occured on response");
+  return Promise.reject(error);
 })
 
 Plugin.install = function (Vue) {
