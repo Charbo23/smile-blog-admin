@@ -43,7 +43,7 @@ _axios.interceptors.request.use(originConfig => {
   if (reqConfig.methods === 'get') {
     if (!reqConfig.params) {  // 防止字段用错
       reqConfig.params = reqConfig.data || {}
-    } 
+    }
   } else if (reqConfig.method === 'post') {
     if (!reqConfig.data) {
       reqConfig.data = reqConfig.params || {}
@@ -84,7 +84,7 @@ _axios.interceptors.request.use(originConfig => {
   }
   return reqConfig
 }, error => {
-  Promise.reject(error)
+  return Promise.reject(error)
 })
 
 _axios.interceptors.response.use(async (res) => {
@@ -133,7 +133,7 @@ _axios.interceptors.response.use(async (res) => {
         return
       }
     }
-    
+
     Vue.prototype.$message({
       message: msg || '未知的errorCode',
       type: 'error',
