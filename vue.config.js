@@ -16,12 +16,6 @@ module.exports = {
         port: 8080,
         open: true
     },
-    chainWebpack: (config) => {
-        config.plugin('html').tap(args => {
-            args[0].cdn = assetsCDN
-            return args
-        })
-    },
     configureWebpack: (config) => {
         if (process.env.NODE_ENV === "production") {
             config.plugins.push(new webpack.BannerPlugin('© 2019 Charbo. All Right Reserved.'));
@@ -29,5 +23,14 @@ module.exports = {
                 config.plugins.push(new BundleAnalyzerPlugin());
             }
         }
+    },
+    chainWebpack: (config) => {
+        config.plugin('html').tap(args => {
+            args[0].cdn = assetsCDN
+            return args
+        });
+        config.performance
+        .set('maxAssetSize', 1024 * 1024)
+        .set('maxEntrypointSize', 2*1024 * 1024);
     },
 };
