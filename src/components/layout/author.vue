@@ -6,16 +6,15 @@
         <ul class="author-wrapper">
           <div class="author-info">
             <div class="background"></div>
-            <i class="avatar"
-              :style="{backgroundImage: `url(${author.avatar})`}"
-            >
+            <i class="avatar" :style="{backgroundImage: `url(${author.avatar})`}">
               <i class="edit el-icon-edit"></i>
               <input
                 class="file"
                 ref="avatarInput"
                 type="file"
                 accept="image/*"
-                @change="fileChange" />
+                @change="fileChange"
+              />
             </i>
             <span class="name">{{author.name}}</span>
           </div>
@@ -33,12 +32,16 @@
       </el-dropdown-menu>
     </el-dropdown>
     <!-- 修改密码弹窗 -->
-    <el-dialog
-      append-to-body
-      :visible.sync="dialogVisible"
-      :before-close="handleClose"
-    >
-      <el-form ref="form" :model="form" status-icon :rules="rules" label-width="100px" v-loading="loading" @submit.native.prevent>
+    <el-dialog append-to-body :visible.sync="dialogVisible" :before-close="handleClose">
+      <el-form
+        ref="form"
+        :model="form"
+        status-icon
+        :rules="rules"
+        label-width="100px"
+        v-loading="loading"
+        @submit.native.prevent
+      >
         <el-form-item label="原始密码" prop="oldPassword">
           <el-input
             type="password"
@@ -101,276 +104,286 @@
             :disable-scroll-to-zoom="false"
             :show-loading="true"
             :quality="quality"
-            :initial-image="cropImg">
-          </croppa>
+            :initial-image="cropImg"
+          ></croppa>
         </div>
         <div style="margin-top: 1em;">通过鼠标滚轮调节头像大小</div>
       </div>
       <div slot="footer" class="dialog-footer">
         <el-button @click="cropVisible = false" size="small">取 消</el-button>
-        <el-button type="primary" @click="handleCrop" size="small">确 定</el-button>
+        <el-button type="primary" @click="handleCrop" size="small" :loading="isAvatarUploading">确 定</el-button>
       </div>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
-import Author from '@/services/models/author'
-import Vue from 'vue'
-import Croppa from 'vue-croppa'
-import 'vue-croppa/dist/vue-croppa.css'
+import { mapActions, mapGetters } from "vuex";
+import Author from "@/services/models/author";
+import Vue from "vue";
+import Croppa from "vue-croppa";
+import "vue-croppa/dist/vue-croppa.css";
 
-Vue.use(Croppa)
+Vue.use(Croppa);
 
-const width = 150
-const height = 150
+const width = 150;
+const height = 150;
 
 export default {
   data() {
     const checkOldPassword = (rule, value, callback) => {
       if (!value) {
-        return callback(new Error('原始密码不能为空'))
+        return callback(new Error("原始密码不能为空"));
       } else if (value.length < 6) {
-        callback(new Error('密码长度不能少于6位数'))
+        callback(new Error("密码长度不能少于6位数"));
       } else if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]/.test(value)) {
-        callback(new Error('密码需要由字母和数字组成'))
+        callback(new Error("密码需要由字母和数字组成"));
       }
-      callback()
-    }
+      callback();
+    };
     const checkPassword = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请输入密码'))
+      if (value === "") {
+        callback(new Error("请输入密码"));
       } else if (value.length < 6) {
-        callback(new Error('密码长度不能少于6位数'))
+        callback(new Error("密码长度不能少于6位数"));
       } else if (!/^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]/.test(value)) {
-        callback(new Error('密码需要由字母和数字组成'))
+        callback(new Error("密码需要由字母和数字组成"));
       } else {
-        if (this.form.confirmPassword !== '') {
-          this.$refs.form.validateField('confirmPassword')
+        if (this.form.confirmPassword !== "") {
+          this.$refs.form.validateField("confirmPassword");
         }
-        callback()
+        callback();
       }
-    }
+    };
     const checkPassword2 = (rule, value, callback) => {
-      if (value === '') {
-        callback(new Error('请再次输入密码'))
+      if (value === "") {
+        callback(new Error("请再次输入密码"));
       } else if (value !== this.form.newPassword) {
-        callback(new Error('两次输入密码不一致!'))
+        callback(new Error("两次输入密码不一致!"));
       } else {
-        callback()
+        callback();
       }
-    }
+    };
     return {
       loading: false,
+      isAvatarUploading: false,
       dialogVisible: false,
       form: {
-        oldPassword: '',
-        newPassword: '',
-        confirmPassword: '',
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: ""
       },
       rules: {
         oldPassword: [
-          { validator: checkOldPassword, trigger: 'blur', required: true },
+          { validator: checkOldPassword, trigger: "blur", required: true }
         ],
         newPassword: [
-          { validator: checkPassword, trigger: 'blur', required: true },
+          { validator: checkPassword, trigger: "blur", required: true }
         ],
         confirmPassword: [
-          { validator: checkPassword2, trigger: 'blur', required: true },
-        ],
+          { validator: checkPassword2, trigger: "blur", required: true }
+        ]
       },
       cropVisible: false,
       // crop 属性
       cropRule: {
         width,
-        height,
+        height
       },
       imgRule: {
         minWidth: width,
-        minHeight: height,
+        minHeight: height
       },
-      cropImg: '',
+      cropImg: "",
       croppa: {},
       imgInfo: null,
       quality: 1
-    }
+    };
   },
 
   computed: {
-    ...mapGetters(['author'])
+    ...mapGetters(["author"])
   },
 
   methods: {
-    ...mapActions(['loginOut', 'setAuthorAndState']),
+    ...mapActions(["loginOut", "setAuthorAndState"]),
 
     fileChange(evt) {
       if (evt.target.files.length !== 1) {
-        this.clearFileInput(this.$refs.avatarInput)
-        return
+        this.clearFileInput(this.$refs.avatarInput);
+        return;
       }
-      const imgFile = evt.target.files[0]
+      const imgFile = evt.target.files[0];
       // 验证文件大小是否符合要求, 不大于 2M
       if (imgFile.size > 1024 * 1024 * 2) {
-        this.$message.error('文件过大超过2M')
+        this.$message.error("文件过大超过2M");
         // 清空输入框
-        this.clearFileInput(this.$refs.avatarInput)
-        return
+        this.clearFileInput(this.$refs.avatarInput);
+        return;
       }
 
       // 验证图像是否符合要求
-      const imgSrc = window.URL.createObjectURL(imgFile)
-      const image = new Image()
-      image.src = imgSrc
+      const imgSrc = window.URL.createObjectURL(imgFile);
+      const image = new Image();
+      image.src = imgSrc;
       image.onload = () => {
-        const w = image.width
-        const h = image.height
+        const w = image.width;
+        const h = image.height;
         if (w < 50) {
-          this.$message.error('图片宽度过小, 请选择大于50px的图像')
+          this.$message.error("图片宽度过小, 请选择大于50px的图像");
           // 清空输入框
-          this.clearFileInput(this.$refs.avatarInput)
-          return
+          this.clearFileInput(this.$refs.avatarInput);
+          return;
         }
         if (h < 50) {
-          this.$message.error('图片高度过小, 请选择大于50px的图像')
+          this.$message.error("图片高度过小, 请选择大于50px的图像");
           // 清空输入框
-          this.clearFileInput(this.$refs.avatarInput)
-          return
+          this.clearFileInput(this.$refs.avatarInput);
+          return;
         }
         // 验证通过, 打开裁剪框
-        this.cropImg = imgSrc
-        this.cropVisible = true
+        this.cropImg = imgSrc;
+        this.cropVisible = true;
         if (this.$refs.croppa) {
-          this.$refs.croppa.refresh()
+          this.$refs.croppa.refresh();
         }
-        this.clearFileInput(this.$refs.avatarInput)
-      }
+        this.clearFileInput(this.$refs.avatarInput);
+      };
       image.onerror = () => {
-        this.$message.error('获取本地图片出现错误, 请重试')
+        this.$message.error("获取本地图片出现错误, 请重试");
         // 清空输入框
-        this.clearFileInput(this.$refs.avatarInput)
-      }
+        this.clearFileInput(this.$refs.avatarInput);
+      };
     },
 
     async handleCrop() {
+      if (this.isAvatarUploading === true) {
+        return;
+      }
+      this.isAvatarUploading = true;
       // 获取剪裁数据
-      const blob = await this.$refs.croppa.promisedBlob('image/jpeg', 0.8)
+      const blob = await this.$refs.croppa.promisedBlob("image/jpeg", 0.8);
       // 构造为文件对象
       const file = new File([blob], `${this.author.name}-avatar.jpg`, {
-        type: 'image/jpeg',
-      })
+        type: "image/jpeg"
+      });
 
       return this.$axios({
-        method: 'post',
-        url: '/v1/file',
+        method: "post",
+        url: "/v1/file",
         data: {
-          file,
-        },
-      }).then((res) => {
+          file
+        }
+      }).then(res => {
         // 清空输入框
-        this.clearFileInput(this.$refs.avatarInput)
+        this.clearFileInput(this.$refs.avatarInput);
         if (!Array.isArray(res) || res.length !== 1) {
-          this.$message.error('头像上传失败, 请重试')
-          return false
+          this.$message.error("头像上传失败, 请重试");
+          return false;
         }
         // if (res.errorCode === ) {
         //   throw new Error('文件体积过大')
         // }
         return this.$axios({
-          method: 'put',
-          url: '/v1/author/avatar',
+          method: "put",
+          url: "/v1/author/avatar",
           data: {
             avatar: res[0]
-          },
-        }).then((res) => {
+          }
+        }).then(res => {
           if (res.errorCode === 0) {
             this.$message({
-              type: 'success',
-              message: '更新头像成功',
-            })
-            this.cropVisible = false
+              type: "success",
+              message: "更新头像成功"
+            });
+            this.cropVisible = false;
             // 触发重新获取用户信息
-            this.getAuthorInfo()
+            this.getAuthorInfo();
+            this.isAvatarUploading = false;
           } else {
-            return Promise.reject(new Error('更新头像失败'))
+            return Promise.reject(new Error("更新头像失败"));
           }
-        })
-      })
+        });
+      });
     },
 
     async getAuthorInfo() {
       try {
-        const author = await Author.getAuthorInfo()
-        this.setAuthorAndState(author)
+        const author = await Author.getAuthorInfo();
+        this.setAuthorAndState(author);
       } catch (e) {
         // eslint-disable-next-line no-console
-        console.log(e) 
+        console.log(e);
       }
     },
 
     outLogin() {
-      this.loginOut()
-      window.location.reload(true)
+      this.loginOut();
+      window.location.reload(true);
     },
 
     changePassword() {
-      this.dialogVisible = true
+      this.dialogVisible = true;
     },
 
     handleClose() {
-      this.dialogVisible = false
-      this.cropVisible = false
+      this.dialogVisible = false;
+      this.cropVisible = false;
     },
 
     submitForm(formName) {
-      if (this.form.oldPassword === '' && this.form.newPassword === '' && this.form.confirmPassword === '') {
-        this.dialogVisible = false
-        return
+      if (
+        this.form.oldPassword === "" &&
+        this.form.newPassword === "" &&
+        this.form.confirmPassword === ""
+      ) {
+        this.dialogVisible = false;
+        return;
       }
       if (this.form.oldPassword === this.form.newPassword) {
-        this.$message.error('新密码不能与原始密码一样')
-        return
+        this.$message.error("新密码不能与原始密码一样");
+        return;
       }
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate(async valid => {
         if (valid) {
           try {
-            this.loading = true
+            this.loading = true;
             const data = {
               oldPassword: this.form.oldPassword,
               password: this.form.confirmPassword
-            }
-            const res = await Author.changeSelfPassword(data)
+            };
+            const res = await Author.changeSelfPassword(data);
             if (res.errorCode === 0) {
-              this.loading = false
-              this.$message.success(`${res.msg}`)
-              this.resetForm(formName)
-              this.dialogVisible = false
+              this.loading = false;
+              this.$message.success(`${res.msg}`);
+              this.resetForm(formName);
+              this.dialogVisible = false;
             } else {
-              this.loading = false
-              this.$message.error(`${res.msg}`)
+              this.loading = false;
+              this.$message.error(`${res.msg}`);
             }
           } catch (e) {
-            this.loading = false
+            this.loading = false;
             // eslint-disable-next-line no-console
-            console.log(e)  
+            console.log(e);
           }
         }
-      })
+      });
     },
 
     resetForm(formName) {
-      this.$refs[formName].resetFields()
+      this.$refs[formName].resetFields();
     },
 
     clearFileInput(ele) {
-      ele.value = ''
+      ele.value = "";
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
-@import '@/assets/scss/variables.scss';
+@import "@/assets/scss/variables.scss";
 
 .avatar-icon {
   display: inline-block;
@@ -409,9 +422,9 @@ export default {
       right: 0;
       bottom: 0;
       left: 0;
-      background: url($assets-url+'/lighthouse.jpg') center center no-repeat;
+      background: url($assets-url+"/lighthouse.jpg") center center no-repeat;
       background-size: cover;
-      filter: brightness(.7);
+      filter: brightness(0.7);
     }
 
     .avatar {
@@ -427,16 +440,16 @@ export default {
       background-position: center center;
       background-size: cover;
       cursor: pointer;
-      transition: all .2s linear;
+      transition: all 0.2s linear;
       z-index: $index-popper;
 
       .edit {
         opacity: 0;
-        transition: all .2s linear;
+        transition: all 0.2s linear;
       }
 
       &:hover {
-        filter: brightness(.6);
+        filter: brightness(0.6);
 
         .edit {
           opacity: 1;
@@ -466,7 +479,7 @@ export default {
 
   .control-wrapper {
     padding: 20px;
-    
+
     > li {
       margin-bottom: 20px;
       cursor: pointer;
