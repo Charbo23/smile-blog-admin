@@ -110,7 +110,7 @@
         <div style="margin-top: 1em;">通过鼠标滚轮调节头像大小</div>
       </div>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="cropVisible = false" size="small">取 消</el-button>
+        <el-button @click="handleCancleCrop" size="small">取 消</el-button>
         <el-button type="primary" @click="handleCrop" size="small" :loading="isAvatarUploading">确 定</el-button>
       </div>
     </el-dialog>
@@ -329,8 +329,14 @@ export default {
     handleClose() {
       this.dialogVisible = false;
       this.cropVisible = false;
+      this.isAvatarUploading = false;
     },
 
+    handleCancleCrop() {
+      this.cropVisible = false;
+      this.isAvatarUploading = false;
+    },
+    
     submitForm(formName) {
       if (
         this.form.oldPassword === "" &&
